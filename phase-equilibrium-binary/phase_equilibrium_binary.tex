@@ -1,0 +1,327 @@
+\documentclass[12pt, a4paper]{article}
+
+% ---- Packages ----
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{longtable}
+
+\geometry{margin=2.5cm}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+
+% ---- Title ----
+\title{\textbf{Phase Equilibrium Concentration Derivation\\for Binary Alloy Systems}\\[0.5em]
+\large Notes on Thermodynamics and Materials Science}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+%% ==============================================================
+\section{Known Conditions and Symbol Definitions}
+%% ==============================================================
+
+Consider a binary alloy system containing two solute elements (denoted as elem~1 and elem~2).
+The physical parameters are defined as follows.
+
+\subsection{Initial State}
+\begin{itemize}
+  \item Initial concentrations: $C_1^0$ (elem~1), $C_2^0$ (elem~2)
+  \item Initial temperature: $T_0$ (liquidus temperature of the base matrix)
+\end{itemize}
+
+\subsection{Physical Parameters}
+\begin{itemize}
+  \item Liquidus slopes: $m_1$ (elem~1), $m_2$ (elem~2) \quad [K/at.\%]
+  \item Equilibrium partition coefficients: $k_1$ (elem~1), $k_2$ (elem~2) \quad [dimensionless]
+  \item Temperature correction term: $\Delta T_R$ (known constant accounting for matrix liquidus shift)
+\end{itemize}
+
+\subsection{Current State (at a given temperature $T$)}
+\begin{itemize}
+  \item Actual liquid concentrations: $C_1$, $C_2$
+\end{itemize}
+
+\subsection{Quantities to Solve}
+\begin{itemize}
+  \item Equilibrium interface concentrations: $C_1^{eq}$, $C_2^{eq}$
+  \item Solid fraction increment: $\Delta f_S$
+\end{itemize}
+
+%% ==============================================================
+\section{Governing Equations}
+%% ==============================================================
+
+Two core equations are established based on the linear thermodynamic approximation
+and the solute redistribution principle.
+
+\subsection{Equation~1: Temperature--Concentration Linearization}
+
+The local liquidus temperature is assumed to shift linearly with solute concentration,
+with contributions from each element superimposed:
+\begin{equation}
+  T = T_0
+    + m_1\!\left(C_1^{eq} - C_1^0\right)
+    + m_2\!\left(C_2^{eq} - C_2^0\right)
+    + \Delta T_R .
+  \label{eq:temp}
+\end{equation}
+
+\subsection{Equation~2: Solid Fraction from Partition Coefficients}
+
+Based on the lever rule and the definition of the partition coefficient,
+the solid fraction increment $\Delta f_S$ must be consistent for both elements:
+\begin{equation}
+  \Delta f_S
+  = \frac{C_1^{eq} - C_1}{C_1^{eq}(k_1 - 1)}
+  = \frac{C_2^{eq} - C_2}{C_2^{eq}(k_2 - 1)} .
+  \label{eq:fs}
+\end{equation}
+
+%% ==============================================================
+\section{Derivation}
+%% ==============================================================
+
+\subsection{Step 1: Relating $C_1^{eq}$ and $C_2^{eq}$ via Equation~\eqref{eq:fs}}
+
+Cross-multiplying Eq.~\eqref{eq:fs}:
+\[
+  C_2^{eq}(k_2 - 1)(C_1^{eq} - C_1)
+  = C_1^{eq}(k_1 - 1)(C_2^{eq} - C_2).
+\]
+
+Let $A_i = k_i - 1$ for brevity. Expanding and rearranging yields an expression
+for $C_2^{eq}$ as a function of $C_1^{eq}$:
+\begin{equation}
+  C_2^{eq}
+  = \frac{A_1\, C_2\, C_1^{eq}}
+         {A_1\, C_1^{eq} - A_2\!\left(C_1^{eq} - C_1\right)} .
+  \label{eq:C2eq}
+\end{equation}
+
+Substituting $A_1 = k_1 - 1$ and $A_2 = k_2 - 1$:
+\begin{equation}
+  C_2^{eq}
+  = \frac{(k_1-1)\,C_2\,C_1^{eq}}
+         {(k_2-1)\,C_1^{eq} + (k_1 - k_2)\,C_1} .
+  \label{eq:C2eq_explicit}
+\end{equation}
+
+\subsection{Step 2: Substituting into Equation~\eqref{eq:temp}}
+
+Define the effective undercooling
+\[
+  \Delta T \;=\; T - T_0 - m_1 C_1^0 - m_2 C_2^0 - \Delta T_R .
+\]
+
+Substituting Eq.~\eqref{eq:C2eq_explicit} into Eq.~\eqref{eq:temp} and letting
+the denominator $D = (k_2-1)\,C_1^{eq} + (k_1-k_2)\,C_1$, after multiplying through
+by $D$ and collecting terms in $C_1^{eq}$, one obtains the quadratic equation:
+\begin{equation}
+  a\,\bigl(C_1^{eq}\bigr)^2 + b\,C_1^{eq} + c = 0 .
+  \label{eq:quadratic}
+\end{equation}
+
+%% ==============================================================
+\section{Closed-Form Results}
+%% ==============================================================
+
+\subsection{Quadratic Coefficients}
+
+\begin{align}
+  a &= m_1(k_2-1) + m_2(k_1-1)\,\frac{C_2}{C_1} , \label{eq:coef_a} \\[4pt]
+  b &= m_1(k_1-k_2)\,C_1 + m_2(k_1-1)\,C_2 - \Delta T\,(k_2-1) , \label{eq:coef_b} \\[4pt]
+  c &= -\Delta T\,(k_1-k_2)\,C_1 , \label{eq:coef_c}
+\end{align}
+where
+\[
+  \Delta T = T - T_0 - m_1 C_1^0 - m_2 C_2^0 - \Delta T_R .
+\]
+
+\subsection{Solution for $C_1^{eq}$}
+
+\begin{equation}
+  \boxed{C_1^{eq} = \frac{-b + \sqrt{b^2 - 4ac}}{2a}}
+  \label{eq:C1eq}
+\end{equation}
+
+\textbf{Remark.} The positive root is selected because concentrations must be positive
+(typically $C_1^{eq} > C_1$ during solidification). If $a \to 0$ (i.e.\ $k_1 \approx k_2$),
+the equation degenerates to a linear problem solved directly from Eq.~\eqref{eq:coef_b}.
+
+\subsection{Solution for $C_2^{eq}$}
+
+\begin{equation}
+  \boxed{C_2^{eq} = \frac{(k_1-1)\,C_2\,C_1^{eq}}
+                         {(k_2-1)\,C_1^{eq} + (k_1-k_2)\,C_1}}
+  \label{eq:C2eq_final}
+\end{equation}
+
+\subsection{Solid Fraction Increment}
+
+\begin{equation}
+  \boxed{\Delta f_S = \frac{C_1^{eq} - C_1}{C_1^{eq}(k_1-1)}}
+  \label{eq:DeltaFS}
+\end{equation}
+
+%% ==============================================================
+\newpage
+\section{Parameter Set: CoCrNi-Ti-C System}
+%% ==============================================================
+
+This section extracts parameters for the CoCrNi-Ti-C alloy system from the report:\\
+\textit{``3D Cellular Automaton Simulation of Dendrite Growth in CoCrNi-Ti-C Alloys:
+A Comprehensive Parameterization Framework''} (March 2026).\\
+These parameters are used to populate $m_1$, $m_2$, $k_1$, $k_2$, and related
+quantities in the binary derivation above.
+
+\subsection{System Definition}
+
+The CoCrNi-Ti-C system is treated as a pseudo-binary system:
+\begin{itemize}
+  \item elem~1 = Titanium (Ti)
+  \item elem~2 = Carbon (C)
+  \item Matrix = equiatomic CoCrNi (effective solvent)
+\end{itemize}
+
+\subsection{Thermodynamic Parameters}
+
+\begin{table}[htbp]
+\centering
+\caption{Thermodynamic parameters ($m_i$, $k_i$) for the CoCrNi-Ti-C system.}
+\label{tab:thermo}
+\begin{tabular}{lllll}
+\toprule
+Symbol & Description & Ti (elem~1) & C (elem~2) & Source \\
+\midrule
+$k_i$  & Equilibrium partition coefficient & $0.06$--$0.12$ & $0.03$--$0.08$ & CALPHAD (TCHEA6); [9,15] \\
+$m_i$  & Liquidus slope (K/at.\%)          & $-20$ to $-35$ & $-40$ to $-80$ & CALPHAD; [9,13,15] \\
+$T_0$  & CoCrNi matrix liquidus temperature & \multicolumn{2}{c}{1610 K (1337 °C)} & Exp.\ DSC + CALPHAD [10] \\
+$T_\text{sol}$ & Solidus temperature        & \multicolumn{2}{c}{1443 K (1170 °C)} & Exp.\ DSC + CALPHAD [10] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Notes:}
+\begin{itemize}
+  \item $k < 1$: both Ti and C strongly partition into the liquid phase.
+  \item $m < 0$: solute enrichment depresses the liquidus temperature.
+  \item Precise values should be extracted from Thermo-Calc + TCHEA6 at the exact composition.
+\end{itemize}
+
+\subsection{Temperature Correction Term $\Delta T_R$}
+
+For a given alloy $(\text{CoCrNi})_{1-2x}\text{Ti}_x\text{C}_x$, the liquidus temperature
+shifts relative to the pure CoCrNi matrix:
+\[
+  \Delta T_R = (m_1 + m_2)\,x .
+\]
+For the representative composition $x = 0.004$ (0.4 at.\% Ti and C each):
+\[
+  \Delta T_R \approx (-25 + (-60)) \times 0.4 = -34\ \text{K} .
+\]
+
+\subsection{Initial Concentrations}
+
+\begin{table}[htbp]
+\centering
+\caption{Initial alloy concentrations.}
+\label{tab:init}
+\begin{tabular}{llll}
+\toprule
+Symbol & Description & Typical value & Unit \\
+\midrule
+$C_1^0$ & Ti initial concentration & 0.4 (range 0.2--1.0) & at.\% \\
+$C_2^0$ & C initial concentration  & 0.4 (equimolar with Ti) & at.\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Diffusion Kinetics Parameters}
+
+\begin{table}[htbp]
+\centering
+\caption{Diffusion coefficients in liquid and solid phases.}
+\label{tab:diff}
+\begin{tabular}{llllll}
+\toprule
+Symbol & Description & Ti & C & Unit & Source \\
+\midrule
+$D_L$ & Liquid diffusivity & $3\times10^{-9}$ & $8\times10^{-9}$ & m$^2$/s & [13,16] \\
+$D_S$ & Solid diffusivity  & $\approx 0$ (Scheil) & $10^{-14}$--$10^{-13}$ & m$^2$/s & DICTRA (MOBHEA2) [9] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Note.} Due to the sluggish diffusion effect in CoCrNi, solid back-diffusion
+$D_S$ for Ti is safely neglected (Scheil--Gulliver approximation).
+
+\subsection{Thermophysical Properties}
+
+\begin{table}[htbp]
+\centering
+\caption{Additional thermophysical parameters.}
+\label{tab:thermo2}
+\begin{tabular}{lllll}
+\toprule
+Symbol & Parameter & Value & Unit & Source \\
+\midrule
+$L$          & Latent heat of fusion           & $2.35\times10^5$          & J/kg        & Exp.\ [10] \\
+$\rho$       & Density                          & $8100$--$8300$            & kg/m$^3$    & [21] \\
+$c_p$        & Specific heat capacity           & $530$--$560$              & J/(kg$\cdot$K) & [10] \\
+$\sigma_{SL}$& Solid--liquid interfacial energy & $0.18$--$0.25$            & J/m$^2$     & Phase-field inversion [17] \\
+$\Gamma$     & Gibbs--Thomson coefficient       & $(1\text{--}3)\times10^{-7}$ & K$\cdot$m  & [18] \\
+$\varepsilon_4$ & Anisotropy strength           & $0.03$--$0.05$            & --          & [13] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Nucleation Parameters (for CET Modeling)}
+
+\begin{table}[htbp]
+\centering
+\caption{Nucleation parameters for the columnar-to-equiaxed transition (CET) model.}
+\label{tab:nucl}
+\begin{tabular}{llll}
+\toprule
+Parameter & Description & Recommended value & Unit \\
+\midrule
+$n_{\max,v}$      & Volumetric nucleation density        & $10^{11}$--$10^{13}$ & m$^{-3}$ \\
+$\Delta T_{N,v}$  & Mean volumetric nucleation undercooling & $1.5$--$4$          & K \\
+$\sigma_{\Delta T,v}$ & Std.\ dev.\ of nucleation distribution & $0.5$--$1$      & K \\
+$n_{\max,s}$      & Surface nucleation density           & $10^{12}$--$10^{14}$ & m$^{-2}$ \\
+$\Delta T_{N,s}$  & Surface nucleation undercooling      & $\approx 0.5$        & K \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Recommended Parameter Values for the Binary Derivation}
+
+Substituting the above into the equations of Sections~2--4:
+\begin{align*}
+  m_1 &= -25\ \text{K/at.\%} \quad \text{(Ti liquidus slope, recommended)} \\
+  m_2 &= -60\ \text{K/at.\%} \quad \text{(C liquidus slope, recommended)} \\
+  k_1 &= 0.08 \quad \text{(Ti partition coefficient, recommended)} \\
+  k_2 &= 0.05 \quad \text{(C partition coefficient, recommended)} \\
+  T_0 &= 1610\ \text{K} \quad \text{(CoCrNi matrix liquidus)} \\
+  \Delta T_R &= \text{from CALPHAD, or approximated as above}
+\end{align*}
+
+The solved quantities $C_1^{eq}$ and $C_2^{eq}$ represent the equilibrium liquid concentrations
+of Ti and C at the solid--liquid interface; $\Delta f_S$ is the solid fraction increment
+at each time step, reflecting the advancement rate of the solidification front.
+
+\bigskip
+\noindent\textit{Parameter source: ``3D CA Simulation of Dendrite Growth in CoCrNi-Ti-C Alloys,'' March 2026.}
+
+\end{document}
